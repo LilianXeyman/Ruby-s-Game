@@ -2,20 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HealthCollectible : MonoBehaviour
+public class HealthZone : MonoBehaviour
 {
     [SerializeField]
-    int vida;
+    int aumentoVida;
 
-    void OnTriggerEnter2D(Collider2D other)
+    void OnTriggerStay2D(Collider2D other)
     {
         PlayerController controller = other.GetComponent<PlayerController>();
 
         if (controller != null && controller.health < controller.maxHealth)
         {
-            controller.ChangeHealth(vida);
-            Destroy(gameObject);
-            
+            controller.ChangeHealth(aumentoVida);
         }
     }
 }

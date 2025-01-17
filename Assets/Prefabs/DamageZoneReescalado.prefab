@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1530277991511154079}
   - component: {fileID: 5106257092178788728}
   - component: {fileID: 50233488402216482}
+  - component: {fileID: -8888410958936681462}
   m_Layer: 0
   m_Name: DamageZoneReescalado
   m_TagString: Untagged
@@ -84,7 +85,7 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
-  m_SpriteSortPoint: 0
+  m_SpriteSortPoint: 1
 --- !u!61 &50233488402216482
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -130,3 +131,16 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 2.56, y: 2.5501738}
   m_EdgeRadius: 0
+--- !u!114 &-8888410958936681462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6743020366117293672}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb34748462962ba49b39b44206b2d6c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  "da\xF1o": -1

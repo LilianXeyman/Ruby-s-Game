@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -24,8 +25,19 @@ public class PlayerController : MonoBehaviour
 
     //Variables para la salud
     public int maxHealth = 5;
-    int currentHealth = 1;
+    int currentHealth;
     public int health { get { return currentHealth; } }
+
+    //Para controllar el tiempo en el que recibes daño
+    float timeInvincible = 2;
+    bool isInvencible;
+    float damageCooldown;
+
+    //Para controlar el tiempo en la zona de vida
+    float timeEsperaVida = 1;
+    bool addHealth;
+    float healthCooldown;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -38,7 +50,7 @@ public class PlayerController : MonoBehaviour
         rigidbody2d = GetComponent<Rigidbody2D>();
 
         //Para la salud del personaje
-        //currentHealth = maxHealth;
+        currentHealth = maxHealth;
     }
 
     // Update is called once per frame
@@ -108,6 +120,24 @@ public class PlayerController : MonoBehaviour
             currentMove = Vector2.zero;
         }
         //Debug.Log($"Active Input: {activeInput} | Movement: {currentMove}");
+
+        //Para controlar el cooldown para recibir daño
+        if (isInvencible)
+        {
+            damageCooldown -=Time.deltaTime;
+            if (damageCooldown < 0)
+            { 
+                isInvencible = false;
+            }
+        }
+        if (addHealth == false)
+        {
+            healthCooldown -= Time.deltaTime;
+            if (healthCooldown < 0)
+            {
+                addHealth = true;
+            }
+        }
     }
     private void FixedUpdate()
     {
@@ -131,6 +161,24 @@ public class PlayerController : MonoBehaviour
     }
     public void ChangeHealth(int amount)
     {
+        if (amount < 0)
+        {
+            if (isInvencible)
+            {
+                return;
+            }
+            isInvencible = true;
+            damageCooldown = timeInvincible;
+        }
+        if (amount > 0)
+        {
+            if (addHealth == false)
+            {
+                return;
+            }
+            addHealth = false;
+            healthCooldown = timeEsperaVida;
+        }
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);//Le da un valor maximo y minimo
         Debug.Log(currentHealth + "/" + maxHealth);
     }
