@@ -180,6 +180,6 @@ public class PlayerController : MonoBehaviour
             healthCooldown = timeEsperaVida;
         }
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);//Le da un valor maximo y minimo
-        Debug.Log(currentHealth + "/" + maxHealth);
+        UIHandler.Instance.SetHealthValue(currentHealth/(float)maxHealth);
     }
 }
