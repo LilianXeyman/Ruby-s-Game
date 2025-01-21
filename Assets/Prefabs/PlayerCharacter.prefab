@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5294135556467113419}
   - component: {fileID: 6510747848899651877}
   - component: {fileID: 2406632486854033074}
+  - component: {fileID: -206921925670788042}
   m_Layer: 0
   m_Name: PlayerCharacter
   m_TagString: Untagged
@@ -265,6 +266,8 @@ MonoBehaviour:
       m_Flags: 8
     m_Flags: 0
   maxHealth: 5
+  currentHealth: 0
+  damageCooldown: 0
 --- !u!50 &6510747848899651877
 Rigidbody2D:
   serializedVersion: 4
@@ -337,3 +340,24 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 1.22, y: 0.880273}
   m_EdgeRadius: 0
+--- !u!95 &-206921925670788042
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 754815985763967636}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: b77822e0485373d40b5beb92e9a5e728, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0

@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using JetBrains.Annotations;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    Animator animator;
+    Vector2 moveDirection = new Vector2(1,0);
     [SerializeField]
     float velJuagador;
 
@@ -25,12 +28,14 @@ public class PlayerController : MonoBehaviour
 
     //Variables para la salud
     public int maxHealth = 5;
+    [SerializeField]
     int currentHealth;
     public int health { get { return currentHealth; } }
 
     //Para controllar el tiempo en el que recibes daño
     float timeInvincible = 2;
     bool isInvencible;
+    [SerializeField]
     float damageCooldown;
 
     //Para controlar el tiempo en la zona de vida
@@ -51,6 +56,9 @@ public class PlayerController : MonoBehaviour
 
         //Para la salud del personaje
         currentHealth = maxHealth;
+
+        //Para la animacion del personaje
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -98,28 +106,54 @@ public class PlayerController : MonoBehaviour
         /*Vector2 positionGamePad = (Vector2)transform.position + moveGamePad * 0.1f * velJuagador*Time.deltaTime;
         transform.position = positionGamePad;*/
 
-        //Para poder hacerlo combinado esta esta opcion
+        //Para la animacion
+        if (!Mathf.Approximately(move.x, 0.0f) || !Mathf.Approximately(move.y, 0.0f))
+        {
+            moveDirection.Set(move.x, move.y);
+            moveDirection.Normalize();
+        }
+
+        if (!Mathf.Approximately(moveWASD.x, 0.0f) || !Mathf.Approximately(moveWASD.y, 0.0f))
+        {
+            moveDirection.Set(moveWASD.x, moveWASD.y);
+            moveDirection.Normalize();
+        }
+
+        if (!Mathf.Approximately(moveGamePad.x, 0.0f) || !Mathf.Approximately(moveGamePad.y, 0.0f))
+        {
+            moveDirection.Set(moveGamePad.x, moveGamePad.y);
+            moveDirection.Normalize();
+        }
+        animator.SetFloat("Look X", moveDirection.x);
+        animator.SetFloat("Look Y", moveDirection.y);
+        //animator.SetFloat("Speed", move.magnitude);
+
+        //Para poder hacerlo combinado está esta opcion
         if (moveGamePad != Vector2.zero)
         {
             activeInput = "GamePad";
             currentMove = moveGamePad;
+            animator.SetFloat("Speed", moveGamePad.magnitude);
         }
         else if (moveWASD != Vector2.zero)
         {
             activeInput = "WASD";
             currentMove = moveWASD;
+            animator.SetFloat("Speed", moveWASD.magnitude);
         }
         else if (move != Vector2.zero)
         {
             activeInput = "Arrows";
             currentMove = move;
+            animator.SetFloat("Speed", move.magnitude);
         }
         else 
         {
             activeInput = "None";
             currentMove = Vector2.zero;
+            animator.SetFloat("Speed", 0f);
         }
-        //Debug.Log($"Active Input: {activeInput} | Movement: {currentMove}");
+        Debug.Log($"Active Input: {activeInput} | Movement: {currentMove}");
 
         //Para controlar el cooldown para recibir daño
         if (isInvencible)
@@ -169,6 +203,7 @@ public class PlayerController : MonoBehaviour
             }
             isInvencible = true;
             damageCooldown = timeInvincible;
+            animator.SetTrigger("Hit");
         }
         if (amount > 0)
         {
