@@ -60270,6 +60270,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerCharacter
       objectReference: {fileID: 0}
+    - target: {fileID: 5294135556467113419, guid: 19fbe7825625502459057597ff9e66e2, type: 3}
+      propertyPath: projectilePrefab
+      value: 
+      objectReference: {fileID: 5160744893865507981, guid: c7de064040e6b7648b78d2ecf38b03e3, type: 3}
     - target: {fileID: 6276028205464432271, guid: 19fbe7825625502459057597ff9e66e2, type: 3}
       propertyPath: m_LocalPosition.x
       value: 2.22

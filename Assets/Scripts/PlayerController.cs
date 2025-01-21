@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     Animator animator;
-    Vector2 moveDirection = new Vector2(1,0);
+    Vector2 moveDirection = new Vector2(1, 0);
     [SerializeField]
     float velJuagador;
 
@@ -33,6 +33,7 @@ public class PlayerController : MonoBehaviour
     public int health { get { return currentHealth; } }
 
     //Para controllar el tiempo en el que recibes daño
+    [SerializeField]
     float timeInvincible = 2;
     bool isInvencible;
     [SerializeField]
@@ -42,6 +43,9 @@ public class PlayerController : MonoBehaviour
     float timeEsperaVida = 1;
     bool addHealth;
     float healthCooldown;
+
+    //Para el proyectil
+    public GameObject projectilePrefab;
 
     // Start is called before the first frame update
     void Start()
@@ -172,6 +176,10 @@ public class PlayerController : MonoBehaviour
                 addHealth = true;
             }
         }
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Launch();
+        }
     }
     private void FixedUpdate()
     {
@@ -216,5 +224,12 @@ public class PlayerController : MonoBehaviour
         }
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);//Le da un valor maximo y minimo
         UIHandler.Instance.SetHealthValue(currentHealth/(float)maxHealth);
+    }
+    void Launch()
+    {
+        GameObject projectileObject = Instantiate(projectilePrefab, rigidbody2d.position + Vector2.up * 0.5f, Quaternion.identity);
+        Projectile projectile = projectileObject.GetComponent<Projectile>();
+        projectile.Launch(moveDirection, 300);
+        animator.SetTrigger("Launch");
     }
 }
