@@ -22,6 +22,7 @@ public class EnemyController : MonoBehaviour
     /*[SerializeField]
     bool couldChange;*/
     bool positivo;
+    bool broken = true;
 
     // Start is called before the first frame update
     void Start()
@@ -61,6 +62,10 @@ public class EnemyController : MonoBehaviour
     }
     void FixedUpdate()
     {
+        if (!broken)
+        { 
+            return;
+        }
         Vector2 position = rigidbody2d.position;
         if (vertical)
         {
@@ -126,5 +131,11 @@ public class EnemyController : MonoBehaviour
         /*tiempoParaCambiar = cambiaEn;
         couldChange = false;
         }*/
+    }
+    public void Fix()
+    {
+        broken = false;
+        rigidbody2d.simulated = false;
+        animator.SetTrigger("Fixed");
     }
 }

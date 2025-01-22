@@ -265,11 +265,28 @@ MonoBehaviour:
       m_Action: Game Pad
       m_Flags: 8
     m_Flags: 0
+  talkAction:
+    m_Name: Talk
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 40ce56c7-0c16-472d-a420-a97b16078992
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings:
+    - m_Name: 
+      m_Id: 9a4f772c-5533-4b3b-9455-2ee0d18ada08
+      m_Path: <Keyboard>/enter
+      m_Interactions: 
+      m_Processors: 
+      m_Groups: 
+      m_Action: Talk
+      m_Flags: 0
+    m_Flags: 0
   maxHealth: 5
   currentHealth: 0
   timeInvincible: 2
   damageCooldown: 0
-  projectilePrefab: {fileID: 0}
+  projectilePrefab: {fileID: 5160744893865507981, guid: c7de064040e6b7648b78d2ecf38b03e3, type: 3}
 --- !u!50 &6510747848899651877
 Rigidbody2D:
   serializedVersion: 4
