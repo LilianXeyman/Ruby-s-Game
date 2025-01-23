@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     public static PlayerController instance;
     
     Animator animator;
+    AudioSource audioSource;
+
     Vector2 moveDirection = new Vector2(1, 0);
     [SerializeField]
     float velJuagador;
@@ -83,6 +85,9 @@ public class PlayerController : MonoBehaviour
 
         //Para la animacion del personaje
         animator = GetComponent<Animator>();
+
+        //Para la música
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -293,5 +298,9 @@ public class PlayerController : MonoBehaviour
                 enemigosPersiguen = true;
             }
         }
+    }
+    public void PlaySound(AudioClip clip)
+    {
+        audioSource.PlayOneShot(clip);
     }
 }
