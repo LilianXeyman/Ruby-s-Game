@@ -7,6 +7,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController instance;
+    
     Animator animator;
     Vector2 moveDirection = new Vector2(1, 0);
     [SerializeField]
@@ -47,6 +49,22 @@ public class PlayerController : MonoBehaviour
 
     //Para el proyectil
     public GameObject projectilePrefab;
+
+    [SerializeField] LayerMask detectionLayer;
+    [SerializeField] Vector2 detectionBoxArea;
+    public bool enemigosPersiguen = false;
+
+    private void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(this);
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -178,14 +196,16 @@ public class PlayerController : MonoBehaviour
                 addHealth = true;
             }
         }
-        if (Input.GetKeyDown(KeyCode.Space))//Pasar a general
+        if (Input.GetButtonDown("Jump"))//Pasar a general
         {
             Launch();
         }
-        if (Input.GetKeyDown(KeyCode.X))//Pasar a general
+        if (Input.GetButtonDown("Submit"))//Pasar a general
         {
             FindFriend();
         }
+
+        //DetectarArea();
     }
     private void FixedUpdate()
     {
@@ -243,7 +263,35 @@ public class PlayerController : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(rigidbody2d.position + Vector2.up * 0.2f, moveDirection, 1.5f, LayerMask.GetMask("NPC"));
         if (hit.collider != null)
         {
-            Debug.Log("Raycast has hit the object " + hit.collider.gameObject);
+            NonPlayerCharacter character = hit.collider.GetComponent<NonPlayerCharacter>();
+            Battle characterBattle = hit.collider.GetComponent<Battle>();
+            Rana characterRana = hit.collider.GetComponent<Rana>();
+            if (character != null)
+            {
+                UIHandler.Instance.DisplayDialogue();
+            }
+            if (characterBattle != null)
+            {
+                UIHandler.Instance.DisplayDialogueBattle();
+            }
+            if (characterRana != null)
+            {
+                UIHandler.Instance.DisplayDialogueRana();
+            }
+        }
+    }
+
+    void DetectarArea()
+    {
+        Vector2 areaJugador = (Vector2)transform.position;
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(areaJugador, detectionBoxArea, 0f, detectionLayer);
+        Debug.Log(colliders[0].name);
+        foreach (var collider in colliders)
+        {
+            if (collider.name.Contains("AreaDetect"))
+            {
+                enemigosPersiguen = true;
+            }
         }
     }
 }
