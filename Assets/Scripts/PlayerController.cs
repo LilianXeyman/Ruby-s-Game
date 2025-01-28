@@ -12,6 +12,9 @@ public class PlayerController : MonoBehaviour
     Animator animator;
     AudioSource audioSource;
 
+    public AudioClip walk, projectileSound, playerHit, questCompleted;
+
+
     Vector2 moveDirection = new Vector2(1, 0);
     [SerializeField]
     float velJuagador;
@@ -55,6 +58,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField] LayerMask detectionLayer;
     [SerializeField] Vector2 detectionBoxArea;
     public bool enemigosPersiguen = false;
+
+    //Contar enemigos
+    public int enemys;
+    public int enemyFixed;
+
+    //Efectos
+    public ParticleSystem hitEffect, collectionableEffect;
+
+    //ReStart
+    [SerializeField]
+    Vector3 posicionInicial;
 
     private void Awake()
     {
@@ -183,6 +197,22 @@ public class PlayerController : MonoBehaviour
             animator.SetFloat("Speed", 0f);
         }
         Debug.Log($"Active Input: {activeInput} | Movement: {currentMove}");
+        if (currentMove != Vector2.zero)
+        {
+            if (!audioSource.isPlaying) // Si no está sonando el audio, lo reproducimos
+            {
+                audioSource.clip = walk; // Aseguramos que el clip sea el correcto
+                audioSource.loop = true; // Hacemos que el audio sea un bucle
+                audioSource.Play();      // Iniciamos el audio
+            }
+        }
+        else
+        {
+            if (audioSource.isPlaying && audioSource.clip == walk)
+            {
+                audioSource.Stop(); // Detenemos el audio si el personaje está quieto
+            }
+        }
 
         //Para controlar el cooldown para recibir daño
         if (isInvencible)
@@ -208,6 +238,14 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Submit"))//Pasar a general
         {
             FindFriend();
+        }
+        if (currentHealth <= 0)
+        {
+            //ReloadScene.instance.RechargeScene();
+            //o
+            currentHealth = maxHealth;
+            UIHandler.Instance.SetHealthValue(1.0f);
+            gameObject.transform.position = new Vector3(posicionInicial.x, posicionInicial.y, transform.position.z);
         }
 
         //DetectarArea();
@@ -243,6 +281,8 @@ public class PlayerController : MonoBehaviour
             isInvencible = true;
             damageCooldown = timeInvincible;
             animator.SetTrigger("Hit");
+            PlaySound(playerHit);
+            Instantiate(hitEffect, transform.position, Quaternion.identity);
         }
         if (amount > 0)
         {
@@ -252,6 +292,7 @@ public class PlayerController : MonoBehaviour
             }
             addHealth = false;
             healthCooldown = timeEsperaVida;
+            Instantiate(collectionableEffect, transform.position, Quaternion.identity);
         }
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);//Le da un valor maximo y minimo
         UIHandler.Instance.SetHealthValue(currentHealth/(float)maxHealth);
@@ -262,6 +303,7 @@ public class PlayerController : MonoBehaviour
         Projectile projectile = projectileObject.GetComponent<Projectile>();
         projectile.Launch(moveDirection, 300);
         animator.SetTrigger("Launch");
+        PlaySound(projectileSound);
     }
     void FindFriend()
     {
@@ -302,5 +344,16 @@ public class PlayerController : MonoBehaviour
     public void PlaySound(AudioClip clip)
     {
         audioSource.PlayOneShot(clip);
+    }
+    public void EnemyFixed(int enemy)
+    {
+        enemys = GameObject.FindGameObjectsWithTag("Enemy").Length;
+        Debug.Log(enemys + " enemigos");
+        enemyFixed += enemy;
+        if (enemys == enemyFixed)
+        {
+            PlaySound(questCompleted);
+        }
+        Debug.Log(enemys + " = " + enemyFixed);
     }
 }

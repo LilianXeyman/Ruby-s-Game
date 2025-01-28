@@ -24,6 +24,15 @@ public class EnemyController : MonoBehaviour
     bool positivo;
     bool broken = true;
 
+    //Para el audio
+    AudioSource enemyAudio;
+    public AudioClip enemyHit, enemyFix;
+
+    //Para el humo
+    public ParticleSystem smokeEffect;
+    public ParticleSystem projectileEffect;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,6 +43,8 @@ public class EnemyController : MonoBehaviour
         //couldChange = false;
 
         animator = GetComponent<Animator>();
+
+        enemyAudio = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -137,5 +148,14 @@ public class EnemyController : MonoBehaviour
         broken = false;
         rigidbody2d.simulated = false;
         animator.SetTrigger("Fixed");
+        if (enemyAudio != null)
+        {
+            enemyAudio.Stop();
+            PlayerController.instance.PlaySound(enemyHit);
+        }
+        PlayerController.instance.PlaySound(enemyFix);
+        smokeEffect.Stop();
+        Instantiate(projectileEffect, transform.position, Quaternion.identity);
+        //PlayerController.instance.EnemyFixed(1); Para arreglar el bug habria que hacer un contador de tiempo para que solo cuente uno por cada enemigo arreglado
     }
 }

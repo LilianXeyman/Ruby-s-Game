@@ -101,6 +101,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 496ff9a0e6f067342936d89b38a82f30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  walk: {fileID: 0}
+  projectileSound: {fileID: 0}
+  playerHit: {fileID: 0}
+  questCompleted: {fileID: 0}
   velJuagador: 40
   LeftAction:
     m_Name: Left
@@ -293,6 +297,9 @@ MonoBehaviour:
     m_Bits: 0
   detectionBoxArea: {x: 0, y: 0}
   enemigosPersiguen: 0
+  enemys: 0
+  enemyFixed: 0
+  hitEffect: {fileID: 0}
 --- !u!50 &6510747848899651877
 Rigidbody2D:
   serializedVersion: 4

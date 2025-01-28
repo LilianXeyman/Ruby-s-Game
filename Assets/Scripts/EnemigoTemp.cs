@@ -40,5 +40,6 @@ public class EnemigoTemp : MonoBehaviour
         broken = false;
         rigidbody2d.simulated = false;
         animator.SetTrigger("Fixed");
+        PlayerController.instance.EnemyFixed(1);
     }
 }
