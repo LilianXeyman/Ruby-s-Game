@@ -68,6 +68,7 @@ public class UIHandler : MonoBehaviour
         m_NonPlayerDialogue.style.display = DisplayStyle.Flex;
         helpRobotText.text = "Esta zona esta hecha para los mejores. Si entras te enfrentaras a una horda de robots. Arreglalos a todos y álzate como el mejor";
         m_TimerDisplay = displayTime;
+        EnemiesContainer.instance.SumaConfined();
     }
     public void DisplayDialogueRana()
     {

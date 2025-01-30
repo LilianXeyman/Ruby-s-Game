@@ -12,7 +12,7 @@ public class PlayerController : MonoBehaviour
     Animator animator;
     AudioSource audioSource;
 
-    public AudioClip walk, projectileSound, playerHit, questCompleted;
+    public AudioClip walk, projectileSound, playerHit;
 
 
     Vector2 moveDirection = new Vector2(1, 0);
@@ -58,10 +58,6 @@ public class PlayerController : MonoBehaviour
     [SerializeField] LayerMask detectionLayer;
     [SerializeField] Vector2 detectionBoxArea;
     public bool enemigosPersiguen = false;
-
-    //Contar enemigos
-    public int enemys;
-    public int enemyFixed;
 
     //Efectos
     public ParticleSystem hitEffect, collectionableEffect;
@@ -196,7 +192,7 @@ public class PlayerController : MonoBehaviour
             currentMove = Vector2.zero;
             animator.SetFloat("Speed", 0f);
         }
-        Debug.Log($"Active Input: {activeInput} | Movement: {currentMove}");
+        //Debug.Log($"Active Input: {activeInput} | Movement: {currentMove}");
         if (currentMove != Vector2.zero)
         {
             if (!audioSource.isPlaying) // Si no está sonando el audio, lo reproducimos
@@ -344,16 +340,5 @@ public class PlayerController : MonoBehaviour
     public void PlaySound(AudioClip clip)
     {
         audioSource.PlayOneShot(clip);
-    }
-    public void EnemyFixed(int enemy)
-    {
-        enemys = GameObject.FindGameObjectsWithTag("Enemy").Length;
-        Debug.Log(enemys + " enemigos");
-        enemyFixed += enemy;
-        if (enemys == enemyFixed)
-        {
-            PlaySound(questCompleted);
-        }
-        Debug.Log(enemys + " = " + enemyFixed);
     }
 }

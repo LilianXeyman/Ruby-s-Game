@@ -45,6 +45,12 @@ public class EnemyController : MonoBehaviour
         animator = GetComponent<Animator>();
 
         enemyAudio = GetComponent<AudioSource>();
+
+        //Contar enemigos totales
+        if (!gameObject.name.Contains("Confined"))
+        {
+            EnemiesContainer.instance.AddEnemie();
+        }
     }
 
     // Update is called once per frame
@@ -145,6 +151,10 @@ public class EnemyController : MonoBehaviour
     }
     public void Fix()
     {
+        if (broken==true)
+        {
+            EnemiesContainer.instance.RemoveEnemie();
+        }
         broken = false;
         rigidbody2d.simulated = false;
         animator.SetTrigger("Fixed");
@@ -156,6 +166,5 @@ public class EnemyController : MonoBehaviour
         PlayerController.instance.PlaySound(enemyFix);
         smokeEffect.Stop();
         Instantiate(projectileEffect, transform.position, Quaternion.identity);
-        //PlayerController.instance.EnemyFixed(1); Para arreglar el bug habria que hacer un contador de tiempo para que solo cuente uno por cada enemigo arreglado
     }
 }
